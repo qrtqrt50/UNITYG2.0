@@ -5,26 +5,65 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public int J_Force;
-    private bool IS_J;
-    private Rigidbody2D Rigidbody_2D;
+    public Rigidbody2D RB_2D;
+    public Transform See_G;
+    public LayerMask Ground;
 
-    private void Start()
-    {
-        IS_J = false;
-    }
 
-    private void Awake()
-    {
-        Rigidbody_2D = GetComponent<Rigidbody2D>();
-    }
 
-    public void jump(InputAction.CallbackContext CON)
+    private float HOR;
+    private float SPEED = 5f;
+    private float JUMP = 10f;
+    private bool IS_RIGHT = true;
+
+
+
+    private void Update()
     {
-        if (IS_J == true)
+        RB_2D.velocity = new Vector2(HOR * SPEED, RB_2D.velocity.y);
+
+        if (!IS_RIGHT && HOR > 0f)
         {
-            Debug.Log($"JUMP! {CON.phase}");
-            Rigidbody_2D.AddForce(Vector3.up * J_Force, ForceMode2D.Impulse);
+            Flip();
+        }
+        else if (IS_RIGHT && HOR < 0f)
+        {
+            Flip();
+        }
+    }
+
+
+
+    private bool IS_GROUND()
+    {
+        return Physics2D.OverlapCircle(See_G.position, 0.2f, Ground);
+    }
+
+    private void Flip()
+    {
+        IS_RIGHT = !IS_RIGHT;
+        Vector3 Local_S = transform.localScale;
+        Local_S.x *= -1f;
+        transform.localScale = Local_S;
+    }
+
+
+
+    public void Move(InputAction.CallbackContext CON)
+    {
+        HOR = CON.ReadValue<Vector2>().x;
+    }
+
+    public void Jump(InputAction.CallbackContext CON)
+    {
+        if (CON.performed && IS_GROUND())
+        {
+            RB_2D.velocity = new Vector2(RB_2D.velocity.x, JUMP);
+        }
+
+        if (CON.canceled && RB_2D.velocity.y > 0f)
+        {
+            RB_2D.velocity = new Vector2(RB_2D.velocity.x, RB_2D.velocity.y * 0.5f);
         }
     }
 }
