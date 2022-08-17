@@ -1,10 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
-public class H_OBJ : MonoBehaviour
+public class Player_H : MonoBehaviour
 {
+    public Slider SB;
     public int H = 100;
+
+
+
+    private void Start()
+    {
+        SB = GetComponent<Slider>();
+        SB.value = H;
+    }
 
 
 
@@ -12,7 +22,7 @@ public class H_OBJ : MonoBehaviour
     {
         H -= D;
 
-        if(H <= 0)
+        if (H <= 0)
         {
             StartCoroutine(OVER());
         }

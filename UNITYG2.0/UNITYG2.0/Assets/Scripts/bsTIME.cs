@@ -25,6 +25,12 @@ public class bsTIME : MonoBehaviour
             _OBJ_.T_D(Shoot.D);
         }
 
+        Player_H _H_ = collision.gameObject.GetComponent<Player_H>();
+        if (_H_ != null)
+        {
+            _H_.T_D(Shoot.D);
+        }
+
         StartCoroutine(Wait());
     }
 
