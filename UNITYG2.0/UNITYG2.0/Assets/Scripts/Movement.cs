@@ -18,7 +18,7 @@ public class Movement : MonoBehaviour
 
 
 
-    private void Update()
+    private void FixedUpdate()
     {
         RB_2D.velocity = new Vector2(HOR * SPEED, RB_2D.velocity.y);
 
@@ -42,9 +42,7 @@ public class Movement : MonoBehaviour
     private void Flip()
     {
         IS_RIGHT = !IS_RIGHT;
-        Vector3 Local_S = transform.localScale;
-        Local_S.x *= -1f;
-        transform.localScale = Local_S;
+        transform.Rotate(0, -180, 0);
     }
 
 
